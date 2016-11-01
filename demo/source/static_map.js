@@ -1,0 +1,12 @@
+http://ditu.google.cn/maps/api/staticmap?
+language=zh_cn&
+size=656x270&
+format=JPG&
+maptype=roadmap&
+scale=1&
+path=color:0x486CDCFF|
+weight:3|
+%2052.3875862648502,13.516768486508226|52.48543800,13.35782700|52.516304,13.388185&
+markers=color:0x486CDC|label:1|%2052.3875862648502,13.516768486508226&
+markers=color:0x486CDC|label:2|52.48543800,13.35782700&
+markers=icon:http://myconianprincessluxuryvillas.com/file/2015/03/mapIcon.png|shadow:true|52.516304,13.388185

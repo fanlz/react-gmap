@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { isEqual, assign } from 'lodash';
-import { loadJS } from '../utils';
+import * as utils from './utils';
 
 class GMap extends Component{
   constructor(props) {
@@ -35,28 +35,27 @@ class GMap extends Component{
         panControl: true,
         mapTypeControl:false,
         streetViewControl: false,
+        backgroundColor: '#eee',
+        clickableIcons: false,
         disableDoubleClickZoom: false
       }
     }
   }
 
   renderLines() {
-    const { lines, lineStyle } = this.props;
+    const { lines=[], lineStyle } = this.props;
     this.lines.forEach((line) => {
       line.setMap(null);
     })
     this.lines = [];
     const lStyle = assign(this.default.lineStyle, lineStyle);
-    lines.forEach((l) => {
-      let line = new google.maps.Polyline(assign({path:l.coords}, lStyle, l.lineStyle))
-    
-      this.lines.push(line);
-      line.setMap(this.map);
-    })
+    const line = new google.maps.Polyline(assign({path: lines}, lStyle));
+    this.lines.push(line);
+    line.setMap(this.map);
   }
 
   renderMakers() {
-    const { markers } = this.props;
+    const { markers=[] } = this.props;
     this.markers.forEach((marker) => {
       marker.remove();
     })
@@ -68,17 +67,19 @@ class GMap extends Component{
   }
 
   updateMap() {
-    const { posOptions } = this.props;
+    const { posOptions, options, posDisabled } = this.props;
+    const newOptions = assign(this.default.options, options);
     
     if(posOptions) {
-      let bounds = new google.maps.LatLngBounds();
-      posOptions.coords.forEach((line) => {
-        bounds.extend(new google.maps.LatLng(line.lat, line.lng));
-      });
-
-      // this.map.fitBounds(bounds);
+      utils.fitMap(this.map, posOptions)
+    } else {
+      if(!centerDisabled) {
+        this.map.setCenter(newOptions.center);
+      }
+      if(zoomDisabled) {
+        this.map.setZoom(newOptions.zoom);
+      }
     }
-
     this.renderLines();
     this.renderMakers();
   }
@@ -128,7 +129,7 @@ class GMap extends Component{
     const mapDom = ReactDOM.findDOMNode(this.refs.mjmap);
     this.map = new google.maps.Map(mapDom, assign(this.default.options, options));
     this.map.addListener('click', function(event) {
-       // onClick && onClick(event);
+       onClick && onClick(event);
     });
     this.map.addListener('dblclick', function(event) {
        onDoubleClick && onDoubleClick(event);
@@ -139,9 +140,7 @@ class GMap extends Component{
   componentDidMount() {
     const _this = this;
     if(!window.google) {
-      loadJS('http://ditu.google.cn/maps/api/js')
-        .then(_this.loadMap, ()=>this.setState({hasGoogle: false}))
-        .catch(() => ()=>this.setState({hasGoogle: false}))
+      utils.loadJS().then(_this.loadMap);
     }
   }
 

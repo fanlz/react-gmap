@@ -1,7 +1,9 @@
-'use strict';
+import GMap from './GMap';
+import PlaceAutocomplete from './PlaceAutocomplete';
+import * as utils from './utils';
 
-var ReactGmap = {
-  GMap: require('./GMap')
-};
-
-module.exports = ReactGmap;
+export default {
+  GMap,
+  PlaceAutocomplete,
+  utils
+}

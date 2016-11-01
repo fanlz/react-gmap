@@ -1,0 +1,33 @@
+
+谷歌地图
+
+地理编码和反向编码
+https://developers.google.com/maps/documentation/geocoding/intro?hl=zh-cn
+
+单击双击
+http://stackoverflow.com/questions/15792655/add-marker-to-google-map-on-click
+
+可拖拽自定义marker
+http://stackoverflow.com/questions/22127626/can-we-make-custom-overlays-draggable-on-google-maps-v3
+
+拖拽地图保持marker在地图正中心不动
+http://stackoverflow.com/questions/19327254/is-there-a-way-to-fix-a-google-maps-marker-to-the-center-of-its-map-always
+
+地图添加事件
+google.maps.event.addListener(map, 'click', function(event) {
+  placeMarker(event.latLng);
+});
+
+function placeMarker(location) {
+  var marker = new google.maps.Marker({
+      position: location, 
+      map: map
+  });
+}
+
+地址和搜索词语的自动完成功能
+https://developers.google.com/maps/documentation/javascript/places-autocomplete
+https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete?hl=zh-cn
+
+画虚线
+http://stackoverflow.com/questions/6098947/styling-a-google-maps-v3-polyline-with-dashes-or-dots
