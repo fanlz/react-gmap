@@ -35,7 +35,7 @@ class App extends Component {
   onPlaceChange(place) {
     this.setState({
       markers: [{lat: place.lat, lng: place.lng, content: '<div class="marker"></div>'}],
-      options: {center: place, zoom: 15}
+      options: {center: place, zoom: 16}
     })
   }
   mapClick(event) {
@@ -48,7 +48,7 @@ class App extends Component {
     const latLng = utils.latLng(lat, lng);
     utils.geocode({latLng}, function(result, status) {
       if(status == 'OK') {
-        _this.placeRef.refEle.value = result[0].formatted_address;
+        _this.placeRef.inputRef.value = result[0].formatted_address;
       }
     })
   }
@@ -57,14 +57,15 @@ class App extends Component {
     return (
       <div style={{width: '500px', height: '500px'}} >
         <GMap 
-        posDisabled={true}
-        ref={(v)=>this.mapRef=v}
-        onClick={this.mapClick}
-        lineStyle={this.state.lineStyle}
-        options={this.state.options}
-        posOptions={{coords: this.state.lines, pix:{x: 100, y: 0}}}
-        lines={this.state.lines}
-        markers={this.state.markers} />
+          centerDisabled={true}
+          zoomDisabled={true}
+          ref={(v)=>this.mapRef=v}
+          onClick={this.mapClick}
+          lineStyle={this.state.lineStyle}
+          options={this.state.options}
+          posOptions={null}
+          lines={this.state.lines}
+          markers={this.state.markers} />
         <PlaceAutocomplete 
           ref={(v)=>this.placeRef=v}
           onPlaceChange={this.onPlaceChange}/>

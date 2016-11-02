@@ -1,94 +1,73 @@
 import React, {Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import GMap from './src/GMap';
-import PlaceAutocomplete from './src/PlaceAutocomplete';
-import * as utils from './src/utils';
+import { GMap, PlaceAutocomplete, utils } from './src';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.mapClick = this.mapClick.bind(this)
-    this.mapDoubleClick = this.mapDoubleClick.bind(this)
-    this.onPlaceChange = this.onPlaceChange.bind(this)
+    this.onPlaceChange = this.onPlaceChange.bind(this);
+    this.mapClick = this.mapClick.bind(this);
     this.state = {
-      inputValue: 'hhe',
       options: {
-        zoomControl: true,
-        disableDoubleClickZoom: true
+        center: {lat: 39.92, lng: 116.46},
+        zoom: 5
       },
       lineStyle: {
-        strokeWeight: 7, 
-        strokeColor: '#ccc'
+        strokeWeight: 4, 
+        strokeColor: '#000',
+        strokeOpacity: 1.0,
       },
-      lines: [{lat: 39.92, lng: 116.46}, 
-            {lat: 38.92, lng: 113.22},
-            {lat: 39.92, lng: 116.46}, 
-            {lat: 44.92, lng: 113.22}],
+      lines: [{lat:39.92,lng:116.46},{lat:38.92,lng:116.46},{lat:38.92,lng:96.46}],
       markers: [{
           lat:39.92,
           lng:116.46,
-          content: '<div class="marker">a</div>'
+          content: '<div class="marker"></div>'
         },
         {
           lat:38.92,
           lng:116.46,
-          content: '<div class="marker">b</div>'
+          content: '<div class="marker"></div>'
         }
       ]
     };
   }
-  mapClick(e) {
-    const _this = this;
-    let lat = e.latLng.lat();
-    let lng = e.latLng.lng();
-    const latLng = utils.latLng(lat, lng);
-    this.setState({
-      markers: [{lat, lng, content:'<div class="marker">0</div>'}]
-    });
 
-    utils.geocode({latLng}, function(results, status) {
-      console.log(results, status);
-      debugger
-    })
-  }
-  mapDoubleClick(e) {
-    this.setState({
-      markers: [{lat: e.latLng.lat(), lng: e.latLng.lng(), content:'<div class="marker">0</div>'}]
-    })
-  }
   onPlaceChange(place) {
-    if(place && place.geometry) {
-      let lat = place.geometry.location.lat();
-      let lng = place.geometry.location.lng();
-
-      this.setState({
-        markers: [{lat, lng, content: '<div class="marker">'+place.formatted_address+'</div>'}],
-        options: {center: {lat, lng}, zoom: 4}
-      })
-    } else {
-      alert('not found');
-    }
+    this.setState({
+      markers: [{lat: place.lat, lng: place.lng, content: '<div class="marker"></div>'}],
+      options: {center: place, zoom: 16}
+    })
   }
-
-
-  componentWillMount() {}
-  componentDidMount() {}
-  componentWillReceiveProps() {}
-  componentWillUnmount() {}
+  mapClick(event) {
+    const _this = this;
+    let lat = event.latLng.lat();
+    let lng = event.latLng.lng();
+    this.setState({
+      markers: [{lat, lng, content: '<div class="marker"></div>'}],
+    })
+    const latLng = utils.latLng(lat, lng);
+    utils.geocode({latLng}, function(result, status) {
+      if(status == 'OK') {
+        _this.placeRef.inputRef.value = result[0].formatted_address;
+      }
+    })
+  }
 
   render() {
     return (
       <div style={{width: '500px', height: '500px'}} >
         <GMap 
-          onClick={this.mapClick}
-          options={this.state.options}
-          lineStyle={this.state.lineStyle} 
-          lines={this.state.lines} 
-          markers={this.state.markers}
+          centerDisabled={true}
           zoomDisabled={true}
-          posOptions={{coords:this.state.lines, pix: {x: 0, y: 0}}}/>
+          ref={(v)=>this.mapRef=v}
+          onClick={this.mapClick}
+          lineStyle={this.state.lineStyle}
+          options={this.state.options}
+          posOptions={null}
+          lines={this.state.lines}
+          markers={this.state.markers} />
         <PlaceAutocomplete 
-          ref={(v)=>this.refPlace=v}
+          ref={(v)=>this.placeRef=v}
           onPlaceChange={this.onPlaceChange}/>
       </div>
     )

@@ -67,7 +67,7 @@ class GMap extends Component{
   }
 
   updateMap() {
-    const { posOptions, options, posDisabled } = this.props;
+    const { posOptions, options, zoomDisabled, centerDisabled } = this.props;
     const newOptions = assign(this.default.options, options);
     
     if(posOptions) {
@@ -76,7 +76,7 @@ class GMap extends Component{
       if(!centerDisabled) {
         this.map.setCenter(newOptions.center);
       }
-      if(zoomDisabled) {
+      if(!zoomDisabled) {
         this.map.setZoom(newOptions.zoom);
       }
     }

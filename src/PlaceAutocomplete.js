@@ -16,7 +16,7 @@ class PlaceAutocomplete extends Component{
   initAutocomplete() {
     const _this = this;
     const { onPlaceChange } = this.props;
-    const inputDom = ReactDOM.findDOMNode(_this.refEle);
+    const inputDom = ReactDOM.findDOMNode(_this.inputRef);
     _this.autocomplete = new google.maps.places.Autocomplete(inputDom);
     _this.autocomplete.addListener('place_changed', function() {
       const place = _this.autocomplete.getPlace();
@@ -54,7 +54,7 @@ class PlaceAutocomplete extends Component{
       <input
         onKeyDown={this.onKeyDown}
         className={cName}
-        ref={(v) => this.refEle=v}
+        ref={(v) => this.inputRef=v}
         placeholder={placeholder} 
         onFocus={onFocus} 
         type="text"></input>
