@@ -30,7 +30,9 @@ class PlaceAutocomplete extends Component{
   }
   componentDidMount() {
     const _this = this;
-    if(!window.google) {
+    if(window.google) {
+      _this.initAutocomplete();
+    } else {
       loadJS().then(_this.initAutocomplete);
     }
   }

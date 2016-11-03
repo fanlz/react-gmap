@@ -48,7 +48,8 @@ export function fitMap(map, options) {
   }
 
   const projCb = function(proj) {
-    const pix = options.pix;
+    const defaultPix = {x: 0, y: 0};
+    const pix = options.pix || defaultPix;
     const c1 = new google.maps.Point(0, 0);
     const c2 = new google.maps.Point(pix.x, pix.y);
 

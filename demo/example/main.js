@@ -14,14 +14,14 @@ class App extends Component {
       },
       lineStyle: {
         strokeWeight: 4, 
-        strokeColor: '#000',
-        strokeOpacity: 1.0,
+        strokeColor: '#000'
       },
       lines: [{lat:39.92,lng:116.46},{lat:38.92,lng:116.46},{lat:38.92,lng:96.46}],
-      markers: [{
+      markers: [
+        {
           lat:39.92,
           lng:116.46,
-          content: '<div class="marker"></div>'
+          content: '<div class="marker "></div>'
         },
         {
           lat:38.92,
