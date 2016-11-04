@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom';
 import { GMap, PlaceAutocomplete, utils } from './src';
 
 class App extends Component {
-  constructor(props) {
-    
+  constructor(props) { 
     super(props);
     this.onPlaceChange = this.onPlaceChange.bind(this);
     this.mapClick = this.mapClick.bind(this);
